@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,44 +12,70 @@
             padding: 20px;
             background-color: #f5f5f5;
         }
-        table {
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            width: 250px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .sidepage {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+            padding: 20px;
+            overflow-y: auto;
+            transition: right 0.3s ease-in-out;
+        }
+        .sidepage.active {
+            right: 0;
+        }
+        .close-btn {
+            background: crimson;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
             width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #fafafa;
-            font-weight: 600;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
+            margin-top: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 
 <h2>Библиотечка · Все данные</h2>
+<div class="container" id="data-container"></div>
 
-<table id="data-table">
-    <tr>
-        <th>id</th>
-        <th>title</th>
-        <th>url1</th>
-    </tr>
-</table>
+<div class="sidepage" id="sidepage">
+    <h3>Детали записи</h3>
+    <p id="side-content"></p>
+    <button class="close-btn" onclick="closeSidepage()">Закрыть</button>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
-        // ✅ Подключаем Supabase
         const supabaseUrl = 'https://qgvqxailuvflfmmndjol.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFndnF4YWlsdXZmbGZtbW5kam9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMzI5MDAsImV4cCI6MjA1NzkwODkwMH0.b8pRD70M5iffuS74fB7YvcaISuC2gftT_ZLfpcCgXwo'; // 🔥 Вставь свой анонимный ключ
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey); // ✅ Правильная инициализация
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFndnF4YWlsdXZmbGZtbW5kam9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMzI5MDAsImV4cCI6MjA1NzkwODkwMH0.b8pRD70M5iffuS74fB7YvcaISuC2gftT_ZLfpcCgXwo'; // 🔥 Вставь свой ключ
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         async function fetchData() {
             const { data, error } = await supabase
@@ -61,17 +87,31 @@
                 return;
             }
 
-            const table = document.getElementById('data-table');
+            const container = document.getElementById('data-container');
 
             data.forEach(row => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${row.id}</td>
-                    <td>${row.title}</td>
-                    <td><a href="${row.url1}" target="_blank">${row.url1}</a></td>
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="title">${row.title}</div>
+                    <a href="${row.url1}" target="_blank">Ссылка</a>
                 `;
-                table.appendChild(tr);
+                card.onclick = () => openSidepage(row);
+                container.appendChild(card);
             });
+        }
+
+        function openSidepage(row) {
+            document.getElementById('side-content').innerHTML = `
+                <p><strong>ID:</strong> ${row.id}</p>
+                <p><strong>Название:</strong> ${row.title}</p>
+                <p><strong>Ссылка:</strong> <a href="${row.url1}" target="_blank">${row.url1}</a></p>
+            `;
+            document.getElementById('sidepage').classList.add('active');
+        }
+
+        function closeSidepage() {
+            document.getElementById('sidepage').classList.remove('active');
         }
 
         fetchData();

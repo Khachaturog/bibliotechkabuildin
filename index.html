@@ -54,7 +54,7 @@
     async function fetchData() {
         const { data, error } = await supabase
             .from('basebiblio')
-            .select('name, email, id');
+            .select('id, title, url1');
 
         if (error) {
             console.error('Ошибка при получении данных:', error);

@@ -46,13 +46,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
-        // ✅ Правильный импорт Supabase SDK v2
-        const { createClient } = supabase;
-
         // ✅ Подключаем Supabase
         const supabaseUrl = 'https://qgvqxailuvflfmmndjol.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFndnF4YWlsdXZmbGZtbW5kam9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMzI5MDAsImV4cCI6MjA1NzkwODkwMH0.b8pRD70M5iffuS74fB7YvcaISuC2gftT_ZLfpcCgXwo'; // 🔥 Укажи свой ключ
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFndnF4YWlsdXZmbGZtbW5kam9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMzI5MDAsImV4cCI6MjA1NzkwODkwMH0.b8pRD70M5iffuS74fB7YvcaISuC2gftT_ZLfpcCgXwo'; // 🔥 Вставь свой анонимный ключ
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey); // ✅ Правильная инициализация
 
         async function fetchData() {
             const { data, error } = await supabase

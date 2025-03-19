@@ -44,35 +44,35 @@
 </table>
 
 <script>
-    // Инициализация Supabase
-    const supabaseUrl = 'https://qgvqxailuvflfmmndjol.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFndnF4YWlsdXZmbGZtbW5kam9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMzI5MDAsImV4cCI6MjA1NzkwODkwMH0.b8pRD70M5iffuS74fB7YvcaISuC2gftT_ZLfpcCgXwo'; // Замените на свой ключ
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    document.addEventListener('DOMContentLoaded', async () => {
+        const supabaseUrl = 'https://qgvqxailuvflfmmndjol.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFndnF4YWlsdXZmbGZtbW5kam9sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDIzMzI5MDAsImV4cCI6MjA1NzkwODkwMH0.b8pRD70M5iffuS74fB7YvcaISuC2gftT_ZLfpcCgXwo'; // 🔥 Укажи свой ключ
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-    async function fetchData() {
-        const { data, error } = await supabase
-            .from('basebiblio')
-            .select('id, title, url1');
+        async function fetchData() {
+            const { data, error } = await supabase
+                .from('basebiblio')
+                .select('id, title, url1');
 
-        if (error) {
-            console.error('Ошибка при получении данных:', error);
-            return;
+            if (error) {
+                console.error('Ошибка при получении данных:', error);
+                return;
+            }
+
+            const table = document.getElementById('data-table');
+
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.id}</td>
+                    <td>${row.title}</td>
+                `;
+                table.appendChild(tr);
+            });
         }
 
-        const table = document.getElementById('data-table');
-
-        data.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${row.id}</td>
-                <td>${row.title}</td>
-            `;
-            table.appendChild(tr);
-        });
-    }
-
-    // Fetch data when the page loads
-    window.onload = fetchData;
+        fetchData();
+    });
 </script>
 
 </body>

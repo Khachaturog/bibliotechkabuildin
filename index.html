@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notion-like Table</title>
+    <title>Supabase Table</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f5f5f5;
-        }
-        h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
         }
         table {
             width: 100%;
@@ -33,156 +29,110 @@
         tr:hover {
             background-color: #f1f1f1;
         }
-        .tag {
-            display: inline-block;
-            padding: 4px 8px;
-            background-color: #e0e0e0;
-            border-radius: 4px;
-            font-size: 12px;
-            color: #333;
-        }
-        .sidepage {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            top: 0;
-            right: 0;
-            width: 30%;
-            height: 100%;
-            overflow: auto;
-            background-color: #fff;
-            border-left: 1px solid #ddd;
-            padding: 20px;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-        }
-        .close {
-            color: #888;
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close:hover {
-            color: #333;
-        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
 
-<h2>Зингилевский</h2>
+<h2>Supabase Data</h2>
 
-<table>
+<table id="data-table">
     <tr>
-        <th>Название</th>
-        <th>Тип</th>
-        <th>Дата публикации</th>
-        <th>Number</th>
-        <th>Files</th>
-        <th>Youtube</th>
+        <th>Заголовок</th>
+        <th>URL 4</th>
+        <th>#</th>
+        <th>← Назад_old</th>
+        <th>⤵︎ Заголовок 5</th>
+        <th>Заголовок_ai</th>
+        <th>Саммари_ai</th>
+        <th>⤵︎ Дата проведения/начала</th>
+        <th>URL 3</th>
+        <th>Автор(ы)</th>
+        <th>Описание</th>
+        <th>Обновлено</th>
+        <th>Комментарий</th>
+        <th>⤵︎ Заголовок 3</th>
+        <th>⤵︎ Заголовок 2</th>
+        <th>⤴ Дата завершения</th>
+        <th>← Назад</th>
+        <th>⤵︎ Заголовок 4</th>
+        <th>URL 1</th>
+        <th>⤵︎ Заголовок 1</th>
+        <th>URL 5</th>
+        <th>Подгруппа</th>
+        <th>Описание_ai</th>
+        <th>Подподгруппа</th>
+        <th>Опубликовано</th>
+        <th>Группа</th>
+        <th>Статус</th>
+        <th>URL 2</th>
+        <th>Создано</th>
+        <th>Файлы</th>
+        <th>Автор_ai</th>
     </tr>
-    <tr>
-        <td>Неделя 1</td>
-        <td><span class="tag">Общее</span></td>
-        <td>01/01/2022</td>
-        <td>1</td>
-        <td></td>
-        <td>youtube.com</td>
-    </tr>
-    <tr>
-        <td>Гайд по Вконтакте</td>
-        <td><span class="tag">Общее</span></td>
-        <td>08/01/2022</td>
-        <td>2</td>
-        <td></td>
-        <td></td>
-    </tr>
-    <!-- Add more rows as needed -->
+    <!-- Rows will be populated by JavaScript -->
 </table>
 
-<div id="mySidepage" class="sidepage">
-    <span class="close" onclick="closeSidepage()">&times;</span>
-    <h2>Row Details</h2>
-    <p id="rowDetails"></p>
-</div>
-
 <script>
-    async function fetchCSV() {
-        try {
-            const response = await fetch('data.csv'); // Убедитесь, что путь к CSV файлу правильный
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.text();
-            const rows = data.split('\n').slice(1); // Пропускаем заголовок
+    // Инициализация Supabase
+    const supabaseUrl = 'https://your-supabase-url.supabase.co';
+    const supabaseKey = 'your-anon-key';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-            const table = document.querySelector('table');
+    async function fetchData() {
+        const { data, error } = await supabase
+            .from('your_table_name')
+            .select('*');
 
-            rows.forEach(row => {
-                const cols = row.split(',');
-                if (cols.length > 1) { // Проверка на пустые строки
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${cols[0]}</td>
-                        <td>${cols[1]}</td>
-                        <td>${cols[2]}</td>
-                        <td>${cols[3]}</td>
-                        <td>${cols[4]}</td>
-                        <td>${cols[5]}</td>
-                    `;
-                    table.appendChild(tr);
-                }
-            });
-        } catch (error) {
-            console.error('Ошибка при загрузке CSV:', error);
+        if (error) {
+            console.error('Ошибка при получении данных:', error);
+            return;
         }
+
+        const table = document.getElementById('data-table');
+
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${row.Заголовок}</td>
+                <td>${row['URL 4']}</td>
+                <td>${row['#']}</td>
+                <td>${row['← Назад_old']}</td>
+                <td>${row['⤵︎ Заголовок 5']}</td>
+                <td>${row.Заголовок_ai}</td>
+                <td>${row.Саммари_ai}</td>
+                <td>${row['⤵︎ Дата проведения/начала']}</td>
+                <td>${row['URL 3']}</td>
+                <td>${row['Автор(ы)']}</td>
+                <td>${row.Описание}</td>
+                <td>${row.Обновлено}</td>
+                <td>${row.Комментарий}</td>
+                <td>${row['⤵︎ Заголовок 3']}</td>
+                <td>${row['⤵︎ Заголовок 2']}</td>
+                <td>${row['⤴ Дата завершения']}</td>
+                <td>${row['← Назад']}</td>
+                <td>${row['⤵︎ Заголовок 4']}</td>
+                <td>${row['URL 1']}</td>
+                <td>${row['⤵︎ Заголовок 1']}</td>
+                <td>${row['URL 5']}</td>
+                <td>${row.Подгруппа}</td>
+                <td>${row.Описание_ai}</td>
+                <td>${row.Подподгруппа}</td>
+                <td>${row.Опубликовано}</td>
+                <td>${row.Группа}</td>
+                <td>${row.Статус}</td>
+                <td>${row['URL 2']}</td>
+                <td>${row.Создано}</td>
+                <td>${row.Файлы}</td>
+                <td>${row.Автор_ai}</td>
+            `;
+            table.appendChild(tr);
+        });
     }
 
-    function openSidepage(...cols) {
-        const details = `
-            Заголовок: ${cols[0]}
-            URL 4: ${cols[1]}
-            #: ${cols[2]}
-            ← Назад_old: ${cols[3]}
-            ⤵︎ Заголовок 5: ${cols[4]}
-            Заголовок_ai: ${cols[5]}
-            Саммари_ai: ${cols[6]}
-            ⤵︎ Дата проведения/начала: ${cols[7]}
-            URL 3: ${cols[8]}
-            Автор(ы): ${cols[9]}
-            Описание: ${cols[10]}
-            Обновлено: ${cols[11]}
-            Комментарий: ${cols[12]}
-            ⤵︎ Заголовок 3: ${cols[13]}
-            ⤵︎ Заголовок 2: ${cols[14]}
-            ⤴ Дата завершения: ${cols[15]}
-            ← Назад: ${cols[16]}
-            ⤵︎ Заголовок 4: ${cols[17]}
-            URL 1: ${cols[18]}
-            ⤵︎ Заголовок 1: ${cols[19]}
-            URL 5: ${cols[20]}
-            Подгруппа: ${cols[21]}
-            Описание_ai: ${cols[22]}
-            Подподгруппа: ${cols[23]}
-            Опубликовано: ${cols[24]}
-            Группа: ${cols[25]}
-            Статус: ${cols[26]}
-            URL 2: ${cols[27]}
-            Создано: ${cols[28]}
-            Файлы: ${cols[29]}
-            Автор_ai: ${cols[30]}
-        `;
-        document.getElementById('rowDetails').innerText = details;
-        document.getElementById('mySidepage').style.display = "block";
-    }
-
-    function closeSidepage() {
-        document.getElementById('mySidepage').style.display = "none";
-    }
-
-    // Fetch CSV data when the page loads
-    window.onload = fetchCSV;
+    // Fetch data when the page loads
+    window.onload = fetchData;
 </script>
 
 </body>
 </html>
-

@@ -38,9 +38,9 @@
 
 <table id="data-table">
     <tr>
-        <th>#</th>
-        <th>Заголовок</th>
-        <th>URL 1</th>
+        <th>id</th>
+        <th>title</th>
+        <th>url1</th>
     </tr>
     <!-- Rows will be populated by JavaScript -->
 </table>
@@ -54,7 +54,7 @@
     async function fetchData() {
         const { data, error } = await supabase
             .from('basebiblio')
-            .select('*');
+            .select('name, email, id');
 
         if (error) {
             console.error('Ошибка при получении данных:', error);
@@ -66,9 +66,9 @@
         data.forEach(row => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${row['#']}</td>
-                <td>${row.Заголовок}</td>
-                <td>${row['URL 1']}</td>
+                <td>${row['id']}</td>
+                <td>${row['title']}</td>
+                <td>${row['url1']}</td>
 
             `;
             table.appendChild(tr);

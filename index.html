@@ -53,7 +53,7 @@
 
         async function fetchData() {
             const { data, error } = await supabase
-                .from('basebiblio')
+                .from('base')
                 .select('id, title, url1');
 
             if (error) {

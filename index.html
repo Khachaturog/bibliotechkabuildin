@@ -38,37 +38,9 @@
 
 <table id="data-table">
     <tr>
-        <th>Заголовок</th>
-        <th>URL 4</th>
         <th>#</th>
-        <th>Назад_old</th>
-        <th>Заголовок 5</th>
-        <th>Заголовок_ai</th>
-        <th>Саммари_ai</th>
-        <th>Дата проведения/начала</th>
-        <th>URL 3</th>
-        <th>Автор(ы)</th>
-        <th>Описание</th>
-        <th>Обновлено</th>
-        <th>Комментарий</th>
-        <th>Заголовок 3</th>
-        <th>Заголовок 2</th>
-        <th>Дата завершения</th>
-        <th>Назад</th>
-        <th>Заголовок 4</th>
+        <th>Заголовок</th>
         <th>URL 1</th>
-        <th>Заголовок 1</th>
-        <th>URL 5</th>
-        <th>Подгруппа</th>
-        <th>Описание_ai</th>
-        <th>Подподгруппа</th>
-        <th>Опубликовано</th>
-        <th>Группа</th>
-        <th>Статус</th>
-        <th>URL 2</th>
-        <th>Создано</th>
-        <th>Файлы</th>
-        <th>Автор_ai</th>
     </tr>
     <!-- Rows will be populated by JavaScript -->
 </table>
@@ -94,37 +66,10 @@
         data.forEach(row => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${row.Заголовок}</td>
-                <td>${row['URL 4']}</td>
                 <td>${row['#']}</td>
-                <td>${row['Назад_old']}</td>
-                <td>${row['Заголовок 5']}</td>
-                <td>${row.Заголовок_ai}</td>
-                <td>${row.Саммари_ai}</td>
-                <td>${row['Дата проведения/начала']}</td>
-                <td>${row['URL 3']}</td>
-                <td>${row['Автор(ы)']}</td>
-                <td>${row.Описание}</td>
-                <td>${row.Обновлено}</td>
-                <td>${row.Комментарий}</td>
-                <td>${row['Заголовок 3']}</td>
-                <td>${row['Заголовок 2']}</td>
-                <td>${row['Дата завершения']}</td>
-                <td>${row['Назад']}</td>
-                <td>${row['Заголовок 4']}</td>
+                <td>${row.Заголовок}</td>
                 <td>${row['URL 1']}</td>
-                <td>${row['Заголовок 1']}</td>
-                <td>${row['URL 5']}</td>
-                <td>${row.Подгруппа}</td>
-                <td>${row.Описание_ai}</td>
-                <td>${row.Подподгруппа}</td>
-                <td>${row.Опубликовано}</td>
-                <td>${row.Группа}</td>
-                <td>${row.Статус}</td>
-                <td>${row['URL 2']}</td>
-                <td>${row.Создано}</td>
-                <td>${row.Файлы}</td>
-                <td>${row.Автор_ai}</td>
+
             `;
             table.appendChild(tr);
         });
